@@ -1,0 +1,424 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>jet_compare_with_chen_model_profile</title><meta name="generator" content="MATLAB 9.12"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-10-23"><meta name="DC.source" content="jet_compare_with_chen_model_profile.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1></h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">The problem is extracted from Wang et al. (2020) in Physics in Fluids about a modeling of expiratory droplets in jets. The profiles of jet (velocity, turbulence kinetic energy, and dissipation rates as a function of location in the jet) are compared among two theoretical models and an experimental data. See details in Wang et al. (2020), Wei and Li (2015), Chan et al. (2014) and Darisse et al. (2015). See attached Matlab script and literature.</a></li><li><a href="#2">plot normalized TKE and dissipation rate.</a></li><li><a href="#3">Wei and Li (2015) model, model coefficients</a></li><li><a href="#4">Chan et al. (2014) model, model coefficient</a></li><li><a href="#5">Zone of flow establishment</a></li><li><a href="#6">Calculate centerline velocity, normalized by the initial velocity (Uc/U0)</a></li><li><a href="#7">Plot radial profile of normalized velocities: Ur/Uc and Vr/Uc.</a></li><li><a href="#8">Plot 2-dimensional colormap in the normalized space (using nozzle diameter D)</a></li></ul></div><h2 id="1">The problem is extracted from Wang et al. (2020) in Physics in Fluids about a modeling of expiratory droplets in jets. The profiles of jet (velocity, turbulence kinetic energy, and dissipation rates as a function of location in the jet) are compared among two theoretical models and an experimental data. See details in Wang et al. (2020), Wei and Li (2015), Chan et al. (2014) and Darisse et al. (2015). See attached Matlab script and literature.</h2><pre class="codeinput">clear <span class="string">all</span>
+close <span class="string">all</span>
+clc
+
+<span class="comment">% plotting parameter</span>
+lw= 2; <span class="comment">% linewidth</span>
+
+<span class="comment">% load experimental data from Darisse et al. (2015)</span>
+load <span class="string">jet_data_literature/jet_data</span>
+</pre><h2 id="2">plot normalized TKE and dissipation rate.</h2><p>On x-axis, r = 0 is the jet center, r is normalized by the jet half-width, b_g</p><pre class="codeinput"><span class="comment">% On y-axis, TKE is normalized by the centerline velocity squared (Uc^2);</span>
+<span class="comment">% dissipation rate is normalized by (Uc^3/b_g)</span>
+
+figure(1)
+hold <span class="string">on</span>
+box <span class="string">on</span>
+set(gca,<span class="string">'fontsize'</span>,16)
+plot(r_tke, tke,<span class="string">'o'</span>);
+
+figure(2)
+hold <span class="string">on</span>
+box <span class="string">on</span>
+set(gca,<span class="string">'fontsize'</span>,16)
+plot(r_eps, eps,<span class="string">'o'</span>);
+</pre><img vspace="5" hspace="5" src="jet_compare_with_chen_model_profile_01.png" alt=""> <img vspace="5" hspace="5" src="jet_compare_with_chen_model_profile_02.png" alt=""> <h2 id="3">Wei and Li (2015) model, model coefficients</h2><pre class="codeinput">c1 = 0.2006;
+c2 = 1.4147;
+c3 = 0.6647;
+c4 = 0.2458;
+c5 = 1.2498;
+c6 = 0.6594;
+
+<span class="comment">% define the range to plot, using r/b_g instead of r</span>
+norm_r = linspace(-3,3);
+
+<span class="comment">% turbulence intensity as a function of r/b_g</span>
+sigma_r = c1 .* (exp(-c2.*(norm_r-c3).^2)+ <span class="keyword">...</span>
+        exp(-c2.*(norm_r+c3).^2));
+
+<span class="comment">% TKE as a function of r/b_g</span>
+tke_r = 3.0*sigma_r.^2/2.0;
+
+<span class="comment">% Dissipation rate as a function of r/b_g</span>
+eps_r = (c4.*(exp(-c5.*(norm_r-c6).^2)+<span class="keyword">...</span>
+       exp(-c5.*(norm_r+c6).^2))).^3;
+
+<span class="comment">% Plot modeled TKE</span>
+figure(1)
+plot(norm_r,tke_r,<span class="string">'linewidth'</span>,lw)
+
+<span class="comment">% Plot modeled dissipation rate</span>
+figure(2)
+plot(norm_r,eps_r,<span class="string">'linewidth'</span>,lw)
+</pre><img vspace="5" hspace="5" src="jet_compare_with_chen_model_profile_03.png" alt=""> <img vspace="5" hspace="5" src="jet_compare_with_chen_model_profile_04.png" alt=""> <h2 id="4">Chan et al. (2014) model, model coefficient</h2><pre class="codeinput">cc1 = 0.0667;
+cc2 = 1.079;
+cc3 = 0.6583;
+cc4 = 0.0178;
+cc5 = 1.963;
+cc6 = 0.6126;
+
+<span class="comment">% TKE as a function of r/b_g</span>
+tke_r2 = cc1 .* (exp(-cc2.*(norm_r-cc3).^2)+ <span class="keyword">...</span>
+        exp(-cc2.*(norm_r+cc3).^2));
+
+<span class="comment">% Plot modeled TKE</span>
+figure(1)
+grid <span class="string">on</span>
+plot(norm_r,tke_r2,<span class="string">'linewidth'</span>,lw)
+yy = ylabel(<span class="string">'$k/U_c^2$'</span>); set(yy,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>);
+xx = xlabel(<span class="string">'$r/b_g$'</span>); set(xx,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>);
+hh=legend(<span class="string">'Data, DLB15'</span>,<span class="string">'WL15'</span>,<span class="string">'This study'</span>);set(hh,<span class="string">'location'</span>,<span class="string">'northwest'</span>,<span class="string">'box'</span>,<span class="string">'off'</span>);
+
+
+<span class="comment">% Dissipation rate as a function of r/b_g</span>
+eps_r2 = cc4 .* (exp(-cc5.*(norm_r-cc6).^2)+ <span class="keyword">...</span>
+        exp(-cc5.*(norm_r+cc6).^2));
+
+<span class="comment">% Plot modeled dissipation rate</span>
+figure(2)
+grid <span class="string">on</span>
+plot(norm_r,eps_r2,<span class="string">'linewidth'</span>,lw)
+yy = ylabel(<span class="string">'$\varepsilon b_g/U_c^3$'</span>); set(yy,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>);
+xx = xlabel(<span class="string">'$r/b_g$'</span>); set(xx,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>);
+hh=legend(<span class="string">'Data, DLB15'</span>,<span class="string">'WL15'</span>,<span class="string">'This study'</span>);
+set(hh,<span class="string">'location'</span>,<span class="string">'northwest'</span>,<span class="string">'box'</span>,<span class="string">'off'</span>);
+</pre><img vspace="5" hspace="5" src="jet_compare_with_chen_model_profile_05.png" alt=""> <img vspace="5" hspace="5" src="jet_compare_with_chen_model_profile_06.png" alt=""> <h2 id="5">Zone of flow establishment</h2><pre class="codeinput">zfe = 6.2;
+
+N = 1000;
+x = linspace(0,100,N);
+y = linspace(-0.2,0.2,N);
+z = linspace(-0.2,0.2,N);
+</pre><h2 id="6">Calculate centerline velocity, normalized by the initial velocity (Uc/U0)</h2><p>power-law decay after the ZFE</p><pre class="codeinput">uc = zfe * (x).^(-1.0);
+flag = x &gt; zfe;
+uc = uc.*flag + (1-flag);
+
+<span class="comment">% Plot Uc/U0</span>
+figure(3)
+hold <span class="string">on</span>
+box <span class="string">on</span>
+grid <span class="string">on</span>
+set(gca,<span class="string">'fontsize'</span>,16)
+plot(x,uc,<span class="string">'linewidth'</span>,lw)
+xx=xlabel(<span class="string">'$x/D$'</span>);set(xx,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>);
+yy=ylabel(<span class="string">'$U_c/U_0$'</span>);set(yy,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>);
+</pre><img vspace="5" hspace="5" src="jet_compare_with_chen_model_profile_07.png" alt=""> <h2 id="7">Plot radial profile of normalized velocities: Ur/Uc and Vr/Uc.</h2><pre class="codeinput">figure(4)
+hold <span class="string">on</span>
+box <span class="string">on</span>
+grid <span class="string">on</span>
+set(gca,<span class="string">'fontsize'</span>,16)
+Ur = exp(-norm_r.^2);
+Vr = 0.057 .* (1-exp(-norm_r.^2)-(0.114/0.057).*norm_r.^2.*exp(-norm_r.^2))./norm_r;
+plot(norm_r, Ur ,<span class="string">'linewidth'</span>,lw)
+xx=xlabel(<span class="string">'$r/b_g$'</span>);set(xx,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>);
+yy=ylabel(<span class="string">'$U_r/U_c$'</span>);set(yy,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>);
+yyaxis <span class="string">right</span>
+plot(norm_r, Vr ,<span class="string">'linewidth'</span>,lw)
+yy=ylabel(<span class="string">'$V_r/U_c$'</span>);set(yy,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>);
+ylim([-0.1 0.1])
+</pre><img vspace="5" hspace="5" src="jet_compare_with_chen_model_profile_08.png" alt=""> <h2 id="8">Plot 2-dimensional colormap in the normalized space (using nozzle diameter D)</h2><pre class="codeinput">x = linspace(0,50,200); <span class="comment">% x/D</span>
+r = linspace(-5,5,200); <span class="comment">% r/D</span>
+
+[xg,rg] = meshgrid(x,r);
+bg = 0.114*xg; <span class="comment">% jet half-width</span>
+
+<span class="comment">% calculate the centerline velocity, the fucntion of xg only</span>
+ucg = zfe .* (xg).^(-1.0);
+flag = xg &gt; zfe;
+ucg = ucg.*flag + (1-flag);
+
+<span class="comment">% calculate the velocity at all meshpoint</span>
+urg = ucg.*exp(-(rg./bg).^2);
+vrg = -0.057 .* ucg .* (1-exp(-(rg./bg).^2)-(0.114/0.057).*(rg./bg).^2.*exp(-(rg./bg).^2))./(rg./bg);
+
+<span class="comment">% Velocity is zero outside of nozzle when x/D &lt; ZFE</span>
+I = find(xg&lt;=zfe);
+vrg(I) = 0;
+urg(I) = 0;
+
+<span class="comment">% within the ZFE, the velocity is U0</span>
+I = find(xg&lt;=zfe &amp; abs(rg)&lt;0.5);
+urg(I) = 1;
+
+<span class="comment">% velocity magnitude</span>
+umag = sqrt(vrg.^2 + urg.^2);
+
+figure
+hold <span class="string">on</span>
+box <span class="string">on</span>
+imagesc(x,r,umag);
+colormap <span class="string">turbo</span>;
+skip = 10; <span class="comment">% skip some vectors for better visualization</span>
+quiver(x(1:skip:end),r(1:skip:end),urg(1:skip:end,1:skip:end),vrg(1:skip:end,1:skip:end),<span class="string">'y'</span>)
+axis([0 x(end) r(1) r(end)])
+
+<span class="comment">% draw boundary of the jet</span>
+plot([0 x],-0.114*[0 x],<span class="string">'w--'</span>);
+plot([0 x],0.114*[0 x],<span class="string">'w--'</span>);
+axis <span class="string">equal</span>
+axis([0 50 -5 5])
+
+xx=xlabel(<span class="string">'$x/D$'</span>);set(xx,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>);
+yy=ylabel(<span class="string">'$r/D$'</span>);set(yy,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>);
+set(gca,<span class="string">'fontsize'</span>,16)
+</pre><img vspace="5" hspace="5" src="jet_compare_with_chen_model_profile_09.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+%% The problem is extracted from Wang et al. (2020) in Physics in Fluids about a modeling of expiratory droplets in jets. The profiles of jet (velocity, turbulence kinetic energy, and dissipation rates as a function of location in the jet) are compared among two theoretical models and an experimental data. See details in Wang et al. (2020), Wei and Li (2015), Chan et al. (2014) and Darisse et al. (2015). See attached Matlab script and literature. 
+
+clear all
+close all
+clc
+
+% plotting parameter
+lw= 2; % linewidth
+
+% load experimental data from Darisse et al. (2015)
+load jet_data_literature/jet_data
+
+%% plot normalized TKE and dissipation rate. 
+% On x-axis, r = 0 is the jet center, r is normalized by the jet
+% half-width, b_g
+
+% On y-axis, TKE is normalized by the centerline velocity squared (Uc^2);
+% dissipation rate is normalized by (Uc^3/b_g)
+
+figure(1)
+hold on
+box on
+set(gca,'fontsize',16)
+plot(r_tke, tke,'o');
+
+figure(2)
+hold on
+box on
+set(gca,'fontsize',16)
+plot(r_eps, eps,'o');
+
+
+%% Wei and Li (2015) model, model coefficients 
+c1 = 0.2006;
+c2 = 1.4147;
+c3 = 0.6647;
+c4 = 0.2458;
+c5 = 1.2498;
+c6 = 0.6594;
+
+% define the range to plot, using r/b_g instead of r
+norm_r = linspace(-3,3);
+
+% turbulence intensity as a function of r/b_g
+sigma_r = c1 .* (exp(-c2.*(norm_r-c3).^2)+ ...
+        exp(-c2.*(norm_r+c3).^2));
+
+% TKE as a function of r/b_g
+tke_r = 3.0*sigma_r.^2/2.0;
+
+% Dissipation rate as a function of r/b_g
+eps_r = (c4.*(exp(-c5.*(norm_r-c6).^2)+...
+       exp(-c5.*(norm_r+c6).^2))).^3;
+
+% Plot modeled TKE
+figure(1)
+plot(norm_r,tke_r,'linewidth',lw)
+
+% Plot modeled dissipation rate
+figure(2)
+plot(norm_r,eps_r,'linewidth',lw)
+
+%% Chan et al. (2014) model, model coefficient 
+cc1 = 0.0667;
+cc2 = 1.079;
+cc3 = 0.6583;
+cc4 = 0.0178;
+cc5 = 1.963;
+cc6 = 0.6126;
+
+% TKE as a function of r/b_g
+tke_r2 = cc1 .* (exp(-cc2.*(norm_r-cc3).^2)+ ...
+        exp(-cc2.*(norm_r+cc3).^2));
+
+% Plot modeled TKE
+figure(1)
+grid on
+plot(norm_r,tke_r2,'linewidth',lw)
+yy = ylabel('$k/U_c^2$'); set(yy,'interpreter','latex');
+xx = xlabel('$r/b_g$'); set(xx,'interpreter','latex');
+hh=legend('Data, DLB15','WL15','This study');set(hh,'location','northwest','box','off');
+
+
+% Dissipation rate as a function of r/b_g
+eps_r2 = cc4 .* (exp(-cc5.*(norm_r-cc6).^2)+ ...
+        exp(-cc5.*(norm_r+cc6).^2));
+
+% Plot modeled dissipation rate
+figure(2)
+grid on
+plot(norm_r,eps_r2,'linewidth',lw)
+yy = ylabel('$\varepsilon b_g/U_c^3$'); set(yy,'interpreter','latex');
+xx = xlabel('$r/b_g$'); set(xx,'interpreter','latex');
+hh=legend('Data, DLB15','WL15','This study');
+set(hh,'location','northwest','box','off');
+
+
+%% Zone of flow establishment
+zfe = 6.2;
+
+N = 1000;
+x = linspace(0,100,N);
+y = linspace(-0.2,0.2,N);
+z = linspace(-0.2,0.2,N);
+
+
+%% Calculate centerline velocity, normalized by the initial velocity (Uc/U0)
+% power-law decay after the ZFE
+uc = zfe * (x).^(-1.0);
+flag = x > zfe;
+uc = uc.*flag + (1-flag);
+
+% Plot Uc/U0
+figure(3)
+hold on
+box on
+grid on
+set(gca,'fontsize',16)
+plot(x,uc,'linewidth',lw)
+xx=xlabel('$x/D$');set(xx,'interpreter','latex');
+yy=ylabel('$U_c/U_0$');set(yy,'interpreter','latex');
+
+
+%% Plot radial profile of normalized velocities: Ur/Uc and Vr/Uc.
+figure(4)
+hold on
+box on
+grid on
+set(gca,'fontsize',16)
+Ur = exp(-norm_r.^2);
+Vr = 0.057 .* (1-exp(-norm_r.^2)-(0.114/0.057).*norm_r.^2.*exp(-norm_r.^2))./norm_r;
+plot(norm_r, Ur ,'linewidth',lw)
+xx=xlabel('$r/b_g$');set(xx,'interpreter','latex');
+yy=ylabel('$U_r/U_c$');set(yy,'interpreter','latex');
+yyaxis right
+plot(norm_r, Vr ,'linewidth',lw)
+yy=ylabel('$V_r/U_c$');set(yy,'interpreter','latex');
+ylim([-0.1 0.1])
+
+
+%% Plot 2-dimensional colormap in the normalized space (using nozzle diameter D)
+x = linspace(0,50,200); % x/D
+r = linspace(-5,5,200); % r/D
+
+[xg,rg] = meshgrid(x,r);
+bg = 0.114*xg; % jet half-width
+
+% calculate the centerline velocity, the fucntion of xg only
+ucg = zfe .* (xg).^(-1.0);
+flag = xg > zfe;
+ucg = ucg.*flag + (1-flag);
+
+% calculate the velocity at all meshpoint
+urg = ucg.*exp(-(rg./bg).^2);
+vrg = -0.057 .* ucg .* (1-exp(-(rg./bg).^2)-(0.114/0.057).*(rg./bg).^2.*exp(-(rg./bg).^2))./(rg./bg);
+
+% Velocity is zero outside of nozzle when x/D < ZFE
+I = find(xg<=zfe);
+vrg(I) = 0;
+urg(I) = 0;
+
+% within the ZFE, the velocity is U0
+I = find(xg<=zfe & abs(rg)<0.5);
+urg(I) = 1;
+
+% velocity magnitude
+umag = sqrt(vrg.^2 + urg.^2);
+
+figure
+hold on
+box on
+imagesc(x,r,umag);
+colormap turbo;
+skip = 10; % skip some vectors for better visualization
+quiver(x(1:skip:end),r(1:skip:end),urg(1:skip:end,1:skip:end),vrg(1:skip:end,1:skip:end),'y')
+axis([0 x(end) r(1) r(end)])
+
+% draw boundary of the jet
+plot([0 x],-0.114*[0 x],'wREPLACE_WITH_DASH_DASH');
+plot([0 x],0.114*[0 x],'wREPLACE_WITH_DASH_DASH');
+axis equal
+axis([0 50 -5 5])
+
+xx=xlabel('$x/D$');set(xx,'interpreter','latex');
+yy=ylabel('$r/D$');set(yy,'interpreter','latex');
+set(gca,'fontsize',16)
+
+
+
+##### SOURCE END #####
+--></body></html>
